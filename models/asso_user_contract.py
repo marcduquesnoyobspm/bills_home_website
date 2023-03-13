@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-from flaskr.database import db
+from . import db
 
 association_table = db.Table(
     "association_table",

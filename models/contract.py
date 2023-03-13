@@ -3,8 +3,8 @@ import datetime
 
 from typing import List
 from sqlalchemy import orm
-from flaskr.database import db
-from models.asso_user_contract import association_table
+from .asso_user_contract import association_table
+from . import db
 
 
 class Contract(db.Model):

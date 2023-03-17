@@ -14,13 +14,15 @@ class User(UserMixin, db.Model):
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key = True)
 
-    user_name = sa.Column(sa.String(60))
+    user_username = sa.Column(sa.String(60), unique = True)
 
     user_password = sa.Column(sa.String(60))
 
     user_firstname = sa.Column(sa.String(60))
 
     user_lastname = sa.Column(sa.String(60))
+    
+    user_email = sa.Column(sa.String(60), unique = True)
 
     contracts: orm.Mapped[List["Contract"]] = orm.relationship(secondary = association_table, back_populates = "users")
 

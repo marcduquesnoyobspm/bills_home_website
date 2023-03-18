@@ -25,7 +25,7 @@ def create_app(config_class=Config):
     app.register_blueprint(index_blueprint)
     
     @login_manager.user_loader
-    def load_user(user_id):
-        return user.User.get(user_id)
+    def load_user(id):
+        return user.User.query.get(int(id))
 
     return app

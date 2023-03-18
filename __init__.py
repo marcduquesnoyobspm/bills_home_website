@@ -1,9 +1,9 @@
 import os
 from flask import Flask, redirect, url_for, render_template, request
 from flask_migrate import Migrate
-from .controllers import login_manager, bcrypt
-from .models import db, contract, user, asso_user_contract
-from .config import Config
+from .controllers import login_manager
+from .models import db, contract, user, asso_user_contract, bcrypt
+from .utils.config import Config
 
 
 def create_app(config_class=Config):
@@ -20,7 +20,9 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
         
     from .controllers.auth import auth as auth_blueprint
+    from .controllers.index import index as index_blueprint
     app.register_blueprint(auth_blueprint)
+    app.register_blueprint(index_blueprint)
     
     @login_manager.user_loader
     def load_user(user_id):

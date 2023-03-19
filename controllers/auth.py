@@ -11,7 +11,7 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index.overview'))
+        return redirect(url_for('overview.overview_page'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(user_email=form.email.data).first()
@@ -19,14 +19,14 @@ def login():
             flash('Invalid email or password')
             return redirect(url_for('auth.login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index.overview'))
+        return redirect(url_for('overview.overview_page'))
     return render_template('login.html', title='Log In', form=form)
 
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index.overview'))
+        return redirect(url_for('overview.overview_page'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(user_email=form.email.data)
@@ -35,7 +35,7 @@ def register():
         db.session.commit()
         login_user(user, remember=form.remember_me.data)
         flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('index.overview'))
+        return redirect(url_for('overview.overview_page'))
     return render_template('register.html', title='Register', form=form)
 
 
@@ -43,4 +43,4 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index.welcome'))
+    return redirect(url_for('welcome.welcome_page'))

@@ -20,9 +20,13 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
         
     from .controllers.auth import auth as auth_blueprint
-    from .controllers.index import index as index_blueprint
+    from .controllers.welcome import welcome as welcome_blueprint
+    from .controllers.profile import profile as profile_blueprint
+    from .controllers.overview import overview as overview_blueprint
     app.register_blueprint(auth_blueprint)
-    app.register_blueprint(index_blueprint)
+    app.register_blueprint(welcome_blueprint)
+    app.register_blueprint(profile_blueprint)
+    app.register_blueprint(overview_blueprint)
     
     @login_manager.user_loader
     def load_user(id):

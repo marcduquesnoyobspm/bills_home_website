@@ -13,6 +13,8 @@ class User(UserMixin, db.Model):
     __tablename__ = "user"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key = True)
+    
+    user_identifiant = sa.Column(sa.String(60), unique = True)
 
     user_email = sa.Column(sa.String(60), unique = True)
 

@@ -29,7 +29,7 @@ def register():
         return redirect(url_for('overview.overview_page'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(user_email=form.email.data)
+        user = User(user_email=form.email.data, user_identifiant=form.identifiant.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()

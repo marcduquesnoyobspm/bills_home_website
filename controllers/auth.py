@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from flask_login import current_user, login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from ..models import db
 from ..models.user import User
 from ..utils.forms import LoginForm, RegistrationForm
@@ -29,7 +29,8 @@ def register():
         return redirect(url_for('overview.overview_page'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(user_email=form.email.data, user_identifiant=form.identifiant.data)
+        user = User(user_email=form.email.data,
+                    user_identifiant=form.identifiant.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()

@@ -1,7 +1,9 @@
 from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 from ..models import db
+from ..models.asso_user_contract import association_table
 from ..models.contract import Contract
+from ..models.user import User
 from ..utils.forms import AddContractForm
 
 
@@ -30,11 +32,17 @@ def add_contract():
 
 @contract.route('/contract/update/<id>', methods=['GET'])
 @login_required
-def delete_contract():
-    return url_for('overview.overview')
+def update_contract():
+    return redirect(url_for('overview.overview_page'))
 
 
 @contract.route('/contract/delete/<id>', methods=['GET'])
 @login_required
-def delete_contract():
-    return url_for('overview.overview')
+def delete_contract(id):
+    contract_to_delete = db.session.query(Contract).join(Contract.users).filter(Contract.id == id, User.id == current_user.id).first()
+    if contract_to_delete is None:
+        pass
+    else:
+        db.session.delete(contract_to_delete)
+        db.session.commit()
+    return redirect(url_for('overview.overview_page'))

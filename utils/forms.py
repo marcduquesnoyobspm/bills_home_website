@@ -71,22 +71,24 @@ class AddContractForm(FlaskForm):
                         "Assurance animal", "Assurance Auto", "Assurance Maison"]
 
     category = SelectField(
-        'Field name', choices=category_choices, validators=[DataRequired()])
+        'Catégorie du contrat', choices=category_choices, validators=[DataRequired()])
 
+    name = StringField('Nom du contrat')
+    
     entreprise = StringField('Entreprise')
 
     url = StringField('URL')
 
-    identifiant = StringField('Identifiant')
+    identifiant = StringField("Identifiant de votre compte sur le site de l'entreprise")
 
-    password = PasswordField('Password')
+    password = PasswordField("Mot de passe de votre compte sur le site de l'entreprise")
 
-    num_contract = StringField('Numéro de contrat')
+    num_contract = StringField('Numéro du contrat')
 
     mens = DecimalField('Montant de la mensualité')
 
-    date = DateField('Date')
+    date = DateField('Date de renouvellement du contrat')
 
-    more_infos = StringField("Plus d'informations")
+    more_infos = StringField("Plus d'informations sur le contrat")
 
-    submit = SubmitField('Add')
+    submit = SubmitField('Ajouter le contrat')

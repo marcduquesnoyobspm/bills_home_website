@@ -14,13 +14,15 @@ class Contract(db.Model):
 
     contract_category = sa.Column(sa.String(60))
     
+    contract_name = sa.Column(sa.String(60))
+    
     contract_entreprise = sa.Column(sa.String(60))
+    
+    contract_url = sa.Column(sa.String(60))
 
     contract_identifiant = sa.Column(sa.String(60))
 
-    contract_password = sa.Column(sa.String(60))
-
-    contract_url = sa.Column(sa.String(60))
+    contract_password = sa.Column(sa.String(60)) 
 
     contract_num = sa.Column(sa.String(60))
 

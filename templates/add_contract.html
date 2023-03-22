@@ -12,6 +12,13 @@
             {% endfor %}
         </p>
         <p>
+            {{ form.name.label }}<br>
+            {{ form.name }}<br>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ name }}]</span>
+            {% endfor %}
+        </p>
+        <p>
             {{ form.entreprise.label }}<br>
             {{ form.entreprise(size=60) }}<br>
             {% for error in form.entreprise.errors %}

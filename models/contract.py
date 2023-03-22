@@ -2,8 +2,7 @@ import sqlalchemy as sa
 import datetime
 
 from typing import List
-from sqlalchemy import orm
-from .asso_user_contract import association_table
+from sqlalchemy import orm, ForeignKey
 from . import db, bcrypt
 
 
@@ -30,8 +29,10 @@ class Contract(db.Model):
     contract_date: orm.Mapped[datetime.date]
 
     contract_more_infos = sa.Column(sa.String(60))
+    
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
 
-    users: orm.Mapped[List["User"]] = orm.relationship(secondary = association_table, back_populates = "contracts")
+    user: orm.Mapped["User"] = orm.relationship(back_populates = "contracts")
     
     def set_password(self, password):
         self.contract_password = bcrypt.generate_password_hash(password).decode("utf-8")

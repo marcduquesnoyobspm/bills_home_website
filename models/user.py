@@ -2,7 +2,6 @@ import sqlalchemy as sa
 from typing import List
 
 from sqlalchemy import orm
-from .asso_user_contract import association_table
 from flask_login import UserMixin
 
 from . import db, bcrypt
@@ -24,7 +23,7 @@ class User(UserMixin, db.Model):
 
     user_lastname = sa.Column(sa.String(60)) 
 
-    contracts: orm.Mapped[List["Contract"]] = orm.relationship(secondary = association_table, back_populates = "users")
+    contracts: orm.Mapped[List["Contract"]] = orm.relationship(back_populates = "user")
     
     def set_password(self, password):
         self.user_password = bcrypt.generate_password_hash(password).decode("utf-8")

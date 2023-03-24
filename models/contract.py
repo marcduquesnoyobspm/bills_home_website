@@ -1,10 +1,11 @@
 import sqlalchemy as sa
 import datetime
-
-from typing import List
 from sqlalchemy import orm, ForeignKey
-from . import db, bcrypt
+from cryptography.fernet import Fernet
+from . import db
 
+key = open("utils/key.txt").readline()
+f_key = Fernet(key)
 
 class Contract(db.Model):
 
@@ -20,36 +21,36 @@ class Contract(db.Model):
     
     contract_url = sa.Column(sa.String(60))
 
-    contract_identifiant = sa.Column(sa.String(60))
+    contract_identifiant = sa.Column(sa.String(255))
 
-    contract_password = sa.Column(sa.String(60)) 
+    contract_password = sa.Column(sa.String(255)) 
 
-    contract_num = sa.Column(sa.String(60))
+    contract_num = sa.Column(sa.String(255))
 
     contract_mens: orm.Mapped[float]
 
     contract_date: orm.Mapped[datetime.date]
 
-    contract_more_infos = sa.Column(sa.String(60))
+    contract_more_infos = sa.Column(sa.String(255))
     
     user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
 
     user: orm.Mapped["User"] = orm.relationship(back_populates = "contracts")
     
     def set_password(self, password):
-        self.contract_password = bcrypt.generate_password_hash(password).decode("utf-8")
+        self.contract_password = f_key.encrypt(password.encode())
 
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.contract_password, password)
+    def get_password(self):
+        return f_key.decrypt(self.contract_password).decode()
     
     def set_identifiant(self, identifiant):
-        self.contract_identifiant = bcrypt.generate_password_hash(identifiant).decode("utf-8")
+        self.contract_identifiant = f_key.encrypt(identifiant.encode())
 
-    def check_identifiant(self, identifiant):
-        return bcrypt.check_password_hash(self.contract_identifiant, identifiant)
+    def get_identifiant(self):
+        return f_key.decrypt(self.contract_identifiant).decode()
     
     def set_num(self, num):
-        self.contract_num = bcrypt.generate_password_hash(num).decode("utf-8")
+        self.contract_num = f_key.encrypt(num.encode())
 
-    def check_num(self, num):
-        return bcrypt.check_password_hash(self.contract_num, num)
+    def get_num(self):
+        return f_key.decrypt(self.contract_num).decode()

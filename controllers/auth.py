@@ -28,9 +28,7 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('overview.overview_page'))
     form = RegistrationForm()
-    print("AVANT VALIDE")
     if form.validate_on_submit():
-        print("VALIDE")
         user = User(user_email=form.email.data,
                     user_identifiant=form.identifiant.data)
         user.set_password(form.password.data)

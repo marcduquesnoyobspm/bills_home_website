@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm, RecaptchaField
+from flask_login import current_user
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, SelectField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from ..models.user import User
+from sqlalchemy import func
 
 
 class LoginForm(FlaskForm):
@@ -34,7 +36,7 @@ class RegistrationForm(FlaskForm):
 
     def validate_identifiant(self, identifiant):
 
-        user = User.query.filter_by(user_identifiant=identifiant.data).first()
+        user = User.query.filter_by(user_identifiant=func.binary(identifiant.data)).first()
 
         if user is not None:
 
@@ -53,6 +55,65 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(user_email=email.data).first()
 
         if user is not None:
+
+            raise ValidationError('Please use a different email address.')
+
+        else:
+
+            user = User.query.filter_by(user_identifiant=email.data).first()
+
+            if user is not None:
+
+                raise ValidationError('Please use a different email address.')
+
+
+class UpdateProfileForm(FlaskForm):
+
+    identifiant = StringField('Identifiant', validators=[DataRequired()])
+    
+    first_name = StringField("Prénom")
+    
+    last_name = StringField("Nom")
+
+    email = StringField('Email', validators=[DataRequired(), Email()])
+
+    current_password = PasswordField('Mot de passe actuel', validators=[DataRequired()])
+    
+    future_password = PasswordField('Futur mot de passe', validators=[
+                              DataRequired()])
+
+    confirmation_future_password = PasswordField('Confirmation du futur mot de passe', validators=[
+                              DataRequired(), EqualTo('future_password')])
+
+    submit = SubmitField('Modifier son profil')
+
+    def validate_identifiant(self, identifiant):
+
+        user = User.query.filter(User.user_identifiant == func.binary(identifiant.data)).first()
+
+        if user is not None and user.user_identifiant != current_user.user_identifiant:
+            
+            print("CA FAIL DANS LE PREMIER VALIDATE")
+            
+            print(user.user_identifiant, current_user.user_identifiant)
+
+            raise ValidationError('Please use a different identifiant.')
+
+        else:
+
+            user = User.query.filter_by(user_email=identifiant.data).first()
+
+            if user is not None:
+                
+                print("CA FAIL DANS LE DEUXIEME VALIDATE")
+
+                raise ValidationError('Please use a different identifiant.')
+
+    def validate_email(self, email):
+
+        user = User.query.filter_by(user_email=email.data).first()
+
+        if user is not None and user.user_email != current_user.user_email:
 
             raise ValidationError('Please use a different email address.')
 

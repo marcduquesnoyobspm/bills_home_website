@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key = True)
     
-    user_identifiant = sa.Column(sa.String(60), unique = True)
+    user_identifiant = sa.Column(sa.String(60, collation = 'utf8_bin'), unique = True)
 
     user_email = sa.Column(sa.String(60), unique = True)
 
@@ -21,9 +21,9 @@ class User(UserMixin, db.Model):
 
     user_firstname = sa.Column(sa.String(60))
 
-    user_lastname = sa.Column(sa.String(60)) 
+    user_lastname = sa.Column(sa.String(60))
 
-    contracts: orm.Mapped[List["Contract"]] = orm.relationship(back_populates = "user")
+    contracts: orm.Mapped[List["Contract"]] = orm.relationship(back_populates = "user", cascade="all, delete")
     
     def set_password(self, password):
         self.user_password = bcrypt.generate_password_hash(password).decode("utf-8")

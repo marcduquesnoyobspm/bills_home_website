@@ -115,3 +115,24 @@ class UpdateContractForm(FlaskForm):
     more_infos = StringField("Plus d'informations sur le contrat")
 
     update_submit = SubmitField('Modifier le contrat')
+    
+
+class ShowContractForm(FlaskForm):
+    
+    name = StringField('Nom du contrat', render_kw={'readonly': True})
+    
+    entreprise = StringField('Entreprise', render_kw={'readonly': True})
+
+    url = StringField('URL', render_kw={'readonly': True})
+
+    identifiant = StringField("Identifiant de votre compte sur le site de l'entreprise", render_kw={'readonly': True})
+
+    password = StringField("Mot de passe de votre compte sur le site de l'entreprise", render_kw={'readonly': True})
+
+    num_contract = StringField('Numéro du contrat', render_kw={'readonly': True})
+
+    mens = DecimalField('Montant de la mensualité', render_kw={'readonly': True})
+
+    date = DateField('Date de renouvellement du contrat', render_kw={'readonly': True})
+
+    more_infos = StringField("Plus d'informations sur le contrat", render_kw={'readonly': True})

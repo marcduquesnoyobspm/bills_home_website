@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from ..models import db
 from ..models.contract import Contract
 from ..models.user import User
-from ..utils.forms import AddContractForm, UpdateContractForm
+from ..utils.forms import AddContractForm, UpdateContractForm, ShowContractForm
 
 
 contract = Blueprint('contract', __name__)
@@ -28,7 +28,7 @@ def add_contract():
 @contract.route('/contract/<id>', methods=['GET'])
 @login_required
 def show_contract(id):
-    form = UpdateContractForm()
+    form = ShowContractForm()
     contract_to_show = db.session.query(Contract).filter(Contract.id == id, Contract.user_id == current_user.id).first()
     identifiant = contract_to_show.get_identifiant()
     password = contract_to_show.get_password()
@@ -36,10 +36,27 @@ def show_contract(id):
     return render_template("show_contract.html", form=form, contract_to_show=contract_to_show, identifiant=identifiant, password=password, num=num)
 
 
-@contract.route('/contract/update/<id>', methods=['PUT'])
+@contract.route('/contract/update/<id>', methods=['GET','POST'])
 @login_required
-def update_contract():
-    return redirect(url_for('overview.overview_page'))
+def update_contract(id):
+    form = UpdateContractForm()
+    contract_to_show = db.session.query(Contract).filter(Contract.id == id, Contract.user_id == current_user.id).first()
+    identifiant = contract_to_show.get_identifiant()
+    password = contract_to_show.get_password()
+    num = contract_to_show.get_num()
+    if form.validate_on_submit():
+        contract_to_show.contract_entreprise = form.entreprise.data
+        contract_to_show.contract_url = form.url.data
+        contract_to_show.contract_mens = form.mens.data
+        contract_to_show.contract_date = form.date.data
+        contract_to_show.contract_more_infos = form.more_infos.data
+        contract_to_show.set_identifiant(form.identifiant.data)
+        contract_to_show.set_password(form.password.data)
+        contract_to_show.set_num(form.num_contract.data)
+        db.session.add(contract_to_show)
+        db.session.commit()
+        return redirect(url_for('overview.overview_page'))
+    return render_template('update_contract.html', form=form, contract_to_show=contract_to_show, identifiant=identifiant, password=password, num=num)
 
 
 @contract.route('/contract/delete/<id>', methods=['GET'])

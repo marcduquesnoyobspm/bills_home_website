@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
+from datetime import date
 from ..models import db
 from ..models.contract import Contract
 from ..models.user import User
@@ -14,8 +15,17 @@ contract = Blueprint('contract', __name__)
 def add_contract():
     form = AddContractForm()
     if form.validate_on_submit():
-        contract = Contract(contract_category=form.category.data, contract_name=form.name.data, contract_entreprise=form.entreprise.data, contract_url=form.url.data,
-                            contract_mens=form.mens.data, contract_date=form.date.data, contract_more_infos=form.more_infos.data, user=current_user)
+        contract = Contract(contract_category=form.category.data,
+                            contract_name=form.name.data, 
+                            contract_entreprise=form.entreprise.data, 
+                            contract_url=form.url.data,
+                            contract_mens=form.mens.data, 
+                            contract_date=form.date.data, 
+                            contract_more_infos=form.more_infos.data, 
+                            user=current_user,
+                            contract_popularity = 0,
+                            contract_date_creation = date.today()
+                            )
         contract.set_identifiant(form.identifiant.data)
         contract.set_password(form.password.data)
         contract.set_num(form.num_contract.data)

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_login import current_user
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, SelectField, DecimalField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Regexp
 from ..models.user import User
 from sqlalchemy import func
 
@@ -15,24 +15,54 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
 
     submit = SubmitField('Sign In')
+    
+
+class StartRegistrationForm(FlaskForm):
+    
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    
+    submit = SubmitField('Commencer >')
+    
+    def validate_email(self, email):
+        
+        user = User.query.filter_by(user_email=email.data).first()
+
+        if user is not None:
+
+            raise ValidationError('Cette adresse email est déjà utilisée.')
+
+        else:
+
+            user = User.query.filter_by(user_identifiant=email.data).first()
+
+            if user is not None:
+
+                raise ValidationError('Cette adresse email est déjà utilisée.')
 
 
-class RegistrationForm(FlaskForm):
+class PasswordRegistrationForm(FlaskForm):
+    
+    password = PasswordField('Mot de passe', validators=[
+        DataRequired(),
+        Regexp(regex="^(?=.*([A-Z]){1,})(?=.*[!@#$&*]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,}$")
+        ])
+    
+    submit = SubmitField('Poursuivre >')
+            
+            
+class FinalRegistrationForm(FlaskForm):
 
     identifiant = StringField('Identifiant', validators=[DataRequired()])
-
-    email = StringField('Email', validators=[DataRequired(), Email()])
-
-    password = PasswordField('Password', validators=[DataRequired()])
-
-    password2 = PasswordField('Repeat Password', validators=[
-                              DataRequired(), EqualTo('password')])
+    
+    first_name = StringField("Prénom")
+    
+    last_name = StringField("Nom")
 
     remember_me = BooleanField('Remember Me')
     
     recaptcha = RecaptchaField()
 
-    submit = SubmitField('Register')
+    submit = SubmitField("S'inscrire")
 
     def validate_identifiant(self, identifiant):
 
@@ -49,22 +79,6 @@ class RegistrationForm(FlaskForm):
             if user is not None:
 
                 raise ValidationError('Please use a different identifiant.')
-
-    def validate_email(self, email):
-
-        user = User.query.filter_by(user_email=email.data).first()
-
-        if user is not None:
-
-            raise ValidationError('Please use a different email address.')
-
-        else:
-
-            user = User.query.filter_by(user_identifiant=email.data).first()
-
-            if user is not None:
-
-                raise ValidationError('Please use a different email address.')
 
 
 class UpdateProfileForm(FlaskForm):
@@ -93,8 +107,6 @@ class UpdateProfileForm(FlaskForm):
 
         if user is not None and user.user_identifiant != current_user.user_identifiant:
             
-            print("CA FAIL DANS LE PREMIER VALIDATE")
-            
             print(user.user_identifiant, current_user.user_identifiant)
 
             raise ValidationError('Please use a different identifiant.')
@@ -104,8 +116,6 @@ class UpdateProfileForm(FlaskForm):
             user = User.query.filter_by(user_email=identifiant.data).first()
 
             if user is not None:
-                
-                print("CA FAIL DANS LE DEUXIEME VALIDATE")
 
                 raise ValidationError('Please use a different identifiant.')
 

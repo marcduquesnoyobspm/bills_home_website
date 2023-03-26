@@ -37,6 +37,10 @@ class Contract(db.Model):
 
     user: orm.Mapped["User"] = orm.relationship(back_populates = "contracts")
     
+    contract_date_creation: orm.Mapped[datetime.date]
+    
+    contract_popularity = sa.Column(sa.Integer)
+    
     def set_password(self, password):
         self.contract_password = f_key.encrypt(password.encode())
 

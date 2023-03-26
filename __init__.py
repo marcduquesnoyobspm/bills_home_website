@@ -1,7 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request
 from flask_migrate import Migrate
 from flask_moment import Moment
-from turbo_flask import Turbo
 from .controllers import login_manager
 from .models import db, bcrypt
 from .utils.config import Config
@@ -15,14 +14,12 @@ def create_app(config_class=Config):
 
     migrate = Migrate()
     moment = Moment()
-    turbo = Turbo()
 
     db.init_app(app)
     migrate.init_app(app, db)
     moment.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
-    turbo.init_app(app)
 
     from .controllers.auth import auth as auth_blueprint
     from .controllers.welcome import welcome as welcome_blueprint

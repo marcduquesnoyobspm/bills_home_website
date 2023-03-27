@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session
+from flask import Blueprint, render_template, flash, redirect, url_for, session, request
 from flask_login import login_user, login_required, logout_user, current_user
 import datetime
 from ..models import db
@@ -10,6 +10,7 @@ auth = Blueprint('auth', __name__)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login/', methods=['GET', 'POST'])
 def login():
     
     if current_user.is_authenticated:
@@ -35,8 +36,13 @@ def login():
     return render_template('login.html', title='Log In', form=form)
 
 
-@auth.route('/signup/more_infos', methods=['GET', 'POST'])
-def register_more_infos():
+@auth.route('/signup', methods=['GET'])
+@auth.route('/signup/', methods=['GET'])
+def register():
+    
+    more_infos_form = MoreInfosRegistrationForm()
+    
+    password_form = FinalRegistrationForm()
     
     if current_user.is_authenticated:
     
@@ -50,27 +56,49 @@ def register_more_infos():
         
         elif session.get('user_identifiant') is not None:
             
-            return redirect(url_for('auth.register_password'))
+                return render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 3)
+        
+    return render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 2)
     
-    form = MoreInfosRegistrationForm()
     
-    if form.validate_on_submit():
+@auth.route('/signup/more_infos', methods=['POST'])
+@auth.route('/signup/more_infos/', methods=['POST'])
+def register_more_infos():
     
-        session["user_identifiant"]=form.identifiant.data
+    more_infos_form = MoreInfosRegistrationForm()
     
-        session["user_firstname"]=form.first_name.data
+    if current_user.is_authenticated:
+    
+        return redirect(url_for('overview.overview_page'))
+    
+    else:
+    
+        if session.get('user_email') is None:
+            
+            return redirect(url_for('welcome.welcome_page'))
+        
+        elif session.get('user_identifiant') is not None:
+            
+            return redirect(url_for('auth.register'))
 
-        session["user_lastname"]=form.last_name.data
+    if more_infos_form.validate_on_submit():
     
-        return redirect(url_for('auth.register_password'))
+        session["user_identifiant"] = more_infos_form.identifiant.data
     
-    return render_template('register.html', form = form, step = 2)
+        session["user_firstname"] = more_infos_form.first_name.data
+
+        session["user_lastname"] = more_infos_form.last_name.data
+        
+        return {"success" : True}
+    
+    return {"success" : False}
 
 
-@auth.route('/signup/password', methods=['GET', 'POST'])
+@auth.route('/signup/password', methods=['POST'])
+@auth.route('/signup/password/', methods=['POST'])
 def register_password():
     
-    form = FinalRegistrationForm()
+    password_form = FinalRegistrationForm()
     
     if current_user.is_authenticated:
         
@@ -84,9 +112,9 @@ def register_password():
         
         elif session.get('user_identifiant') is None:
     
-            return redirect(url_for('auth.register_more_infos'))
+            return redirect(url_for('auth.register'))
     
-    if form.validate_on_submit():
+    if password_form.validate_on_submit():
         
         user_to_register = User(
     
@@ -102,13 +130,13 @@ def register_password():
     
         )
     
-        user_to_register.set_password(form.password.data)
+        user_to_register.set_password(password_form.password.data)
         
         db.session.add(user_to_register)
     
         db.session.commit()
     
-        login_user(user_to_register, remember=form.remember_me.data)
+        login_user(user_to_register, remember=password_form.remember_me.data)
     
         session.pop('user_email', None)
             
@@ -119,11 +147,10 @@ def register_password():
         session.pop('user_lastname', None)
     
         return redirect(url_for('overview.overview_page'))
-    
-    return render_template('register.html', form = form, step = 3)
 
 
 @auth.route('/logout')
+@auth.route('/logout/')
 @login_required
 def logout():
     

@@ -2,35 +2,78 @@
 <h1>Register</h1>
 <p>Adresse E-mail</p>
 <p>{{ session['user_email'] }}</p>
-{% if step == 2 %}
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.identifiant.label }}<br> {{ form.identifiant(size=60) }}<br> {% for error in form.identifiant.errors %}
-        <span style="color: red;">[{{ error }}]</span> {% endfor %}
-    </p>
-    <p>
-        {{ form.first_name.label }}<br> {{ form.first_name(size=32) }}<br> {% for error in form.first_name.errors %}
-        <span style="color: red;">[{{ error }}]</span> {% endfor %}
-    </p>
-    <p>
-        {{ form.last_name.label }}<br> {{ form.last_name(size=32) }}<br> {% for error in form.last_name.errors %}
-        <span style="color: red;">[{{ error }}]</span> {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
 
-{% else %}
 
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>{{ form.password }} {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span> {% endfor %}
-    </p>
-    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-    <p>{{ form.recaptcha }} {% for error in form.recaptcha.errors %}
-        <span style="color: red;">[{{ error }}]</span> {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
-{% endif %} {% endblock %}
+<div id="step2">
+    <form id="identifiantForm" action="" method="post">
+        {{ more_infos_form.hidden_tag() }}
+        <p>
+            {{ more_infos_form.identifiant.label }}<br> {{ more_infos_form.identifiant(size=60) }}<br> {% for error in more_infos_form.identifiant.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>
+            {{ more_infos_form.first_name.label }}<br> {{ more_infos_form.first_name(size=32) }}<br> {% for error in more_infos_form.first_name.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>
+            {{ more_infos_form.last_name.label }}<br> {{ more_infos_form.last_name(size=32) }}<br> {% for error in more_infos_form.last_name.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>{{ more_infos_form.submit() }}</p>
+    </form>
+</div>
+
+<div id="step3">
+    <form id="passwordForm" action="{{ url_for('auth.register_password') }}" method="post">
+        {{ password_form.hidden_tag() }}
+        <p>{{ password_form.password }} {% for error in password_form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>{{ password_form.remember_me() }} {{ password_form.remember_me.label }}</p>
+        <p>{{ password_form.recaptcha }} {% for error in password_form.recaptcha.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>{{ password_form.submit() }}</p>
+    </form>
+</div>
+
+
+<script>
+    window.onload = toggle_good_form()
+
+    function toggle_good_form(){
+        let step = {{ step }}
+        console.log(step)
+        if (step == 2) {
+            document.getElementById("step2").style.display = "block"
+            document.getElementById("step3").style.display = "none"
+        } else {
+            document.getElementById("step2").style.display = "none";
+            document.getElementById("step3").style.display = "block";
+        }
+    };
+
+    function submit_more_infos_form(event){
+        event.preventDefault();
+        let form = document.getElementById("identifiantForm");
+        let formData = new FormData(form);
+        let csrf_token = document.getElementById("csrf_token").value;
+        formData.append("csrf_token", csrf_token);
+        test_url = {{ url_for('auth.register_more_infos')|tojson }};
+        fetch(test_url, {
+                "method": "POST",
+                "body": formData
+            }).then(response => response.json())
+            .then(data => {
+                console.log(data.success);
+                if (data.success) {
+                    document.getElementById("step2").style.display = "none";
+                    document.getElementById("step3").style.display = "block";
+                }
+            })
+
+        ;
+    }
+</script>
+
+{% endblock %}

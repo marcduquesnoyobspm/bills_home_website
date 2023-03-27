@@ -62,7 +62,7 @@ class MoreInfosRegistrationForm(FlaskForm):
     
     last_name = StringField("Nom")
 
-    submit = SubmitField('Poursuivre >')
+    submit = SubmitField('Poursuivre >', render_kw={"onclick":"submit_more_infos_form(event)"})
 
     def validate_identifiant(self, identifiant):
 

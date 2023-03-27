@@ -7,6 +7,8 @@ welcome = Blueprint('welcome', __name__)
 
 
 @welcome.route('/', methods=['GET', 'POST'])
+@welcome.route('/welcome/', methods=['GET', 'POST'])
+@welcome.route('/welcome/', methods=['GET', 'POST'])
 def welcome_page():
 
     if current_user.is_authenticated:
@@ -19,6 +21,6 @@ def welcome_page():
 
         session['user_email'] = form.email.data
 
-        return redirect(url_for('auth.register_more_infos'))
+        return redirect(url_for('auth.register'))
 
     return render_template('welcome.html', form=form)

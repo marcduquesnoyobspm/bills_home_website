@@ -40,17 +40,21 @@ class StartRegistrationForm(FlaskForm):
                 raise ValidationError('Cette adresse email est déjà utilisée.')
 
 
-class PasswordRegistrationForm(FlaskForm):
+class FinalRegistrationForm(FlaskForm):
     
     password = PasswordField('Mot de passe', validators=[
         DataRequired(),
         Regexp(regex="^(?=.*([A-Z]){1,})(?=.*[!@#$&*]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,}$")
         ])
+       
+    remember_me = BooleanField('Se souvenir de moi')
     
-    submit = SubmitField('Poursuivre >')
+    recaptcha = RecaptchaField()
+    
+    submit = SubmitField("S'inscrire")
             
             
-class FinalRegistrationForm(FlaskForm):
+class MoreInfosRegistrationForm(FlaskForm):
 
     identifiant = StringField('Identifiant', validators=[DataRequired()])
     
@@ -58,11 +62,7 @@ class FinalRegistrationForm(FlaskForm):
     
     last_name = StringField("Nom")
 
-    remember_me = BooleanField('Remember Me')
-    
-    recaptcha = RecaptchaField()
-
-    submit = SubmitField("S'inscrire")
+    submit = SubmitField('Poursuivre >')
 
     def validate_identifiant(self, identifiant):
 

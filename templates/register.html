@@ -5,14 +5,6 @@
 {% if step == 2 %}
 <form action="" method="post">
     {{ form.hidden_tag() }}
-    <p>{{ form.password }} {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span> {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
-{% else %}
-<form action="" method="post">
-    {{ form.hidden_tag() }}
     <p>
         {{ form.identifiant.label }}<br> {{ form.identifiant(size=60) }}<br> {% for error in form.identifiant.errors %}
         <span style="color: red;">[{{ error }}]</span> {% endfor %}
@@ -23,6 +15,16 @@
     </p>
     <p>
         {{ form.last_name.label }}<br> {{ form.last_name(size=32) }}<br> {% for error in form.last_name.errors %}
+        <span style="color: red;">[{{ error }}]</span> {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+
+{% else %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.password }} {% for error in form.password.errors %}
         <span style="color: red;">[{{ error }}]</span> {% endfor %}
     </p>
     <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>

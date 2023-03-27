@@ -19,6 +19,6 @@ def welcome_page():
 
         session['user_email'] = form.email.data
 
-        return redirect(url_for('auth.register_password'))
+        return redirect(url_for('auth.register_more_infos'))
 
     return render_template('welcome.html', form=form)

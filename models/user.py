@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 from typing import List
-
+import datetime
 from sqlalchemy import orm
 from flask_login import UserMixin
 
@@ -22,6 +22,8 @@ class User(UserMixin, db.Model):
     user_firstname = sa.Column(sa.String(60))
 
     user_lastname = sa.Column(sa.String(60))
+    
+    user_creation_date: orm.Mapped[datetime.date] = orm.mapped_column(nullable=True)
 
     contracts: orm.Mapped[List["Contract"]] = orm.relationship(back_populates = "user", cascade="all, delete")
     

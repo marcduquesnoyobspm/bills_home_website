@@ -5,6 +5,14 @@
     
         <h1>Hi, {{ current_user.user_email }}!</h1>
         <img src="{{ url_for('static', filename='') }}/{{ current_user.user_profile_picture }}"/>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#test">Clic</a>
+                </li>
+            </ul>
+
+        </nav>
         <a href="{{ url_for('contract.add_contract') }}">Ajouter un contrat</a>
         {% for contract in current_user.contracts %}
             <p>{{ contract.contract_category }}</p>
@@ -13,5 +21,23 @@
             <a href="{{ url_for('contract.show_contract', id=contract.id) }}">Voir le contrat</a>
         {% endfor %}
         
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
 
-{% endblock %}
+        <p id="test">Voilà le test est bon</p>
+
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+
+        {% endblock %}

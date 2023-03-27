@@ -4,6 +4,7 @@
 
     
         <h1>Hi, {{ current_user.user_email }}!</h1>
+        <img src="{{ url_for('static', filename='') }}/{{ current_user.user_profile_picture }}"/>
         <a href="{{ url_for('contract.add_contract') }}">Ajouter un contrat</a>
         {% for contract in current_user.contracts %}
             <p>{{ contract.contract_category }}</p>

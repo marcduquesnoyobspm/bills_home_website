@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session, request
+from flask import Blueprint, render_template, flash, redirect, url_for, session, make_response
 from flask_login import login_user, login_required, logout_user, current_user
-import datetime
+import datetime, os, random
+
 from ..models import db
 from ..models.user import User
 from ..utils.forms import LoginForm, MoreInfosRegistrationForm, FinalRegistrationForm
@@ -8,7 +9,7 @@ from ..utils.forms import LoginForm, MoreInfosRegistrationForm, FinalRegistratio
 
 auth = Blueprint('auth', __name__)
 
-
+    
 @auth.route('/login', methods=['GET', 'POST'])
 @auth.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -33,7 +34,15 @@ def login():
     
         return redirect(url_for('overview.overview_page'))
     
-    return render_template('login.html', title='Log In', form=form)
+    response = make_response(render_template('login.html', title='Log In', form=form))
+    
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'    
+    
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    
+    return response
 
 
 @auth.route('/signup', methods=['GET'])
@@ -56,10 +65,26 @@ def register():
         
         elif session.get('user_identifiant') is not None:
             
-                return render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 3)
+            response = make_response(render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 3))
+
+            response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+                
+            response.headers['X-Content-Type-Options'] = 'nosniff'
+            
+            response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+            
+            return response
         
-    return render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 2)
+    response = make_response(render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 2))
     
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    
+    return response
+
     
 @auth.route('/signup/more_infos', methods=['POST'])
 @auth.route('/signup/more_infos/', methods=['POST'])
@@ -116,6 +141,8 @@ def register_password():
     
     if password_form.validate_on_submit():
         
+        user_pic = random.choice(os.listdir("static/"))
+        
         user_to_register = User(
     
             user_email = session['user_email'],
@@ -126,7 +153,9 @@ def register_password():
     
             user_lastname = session["user_lastname"],
     
-            user_creation_date = datetime.date.today()
+            user_creation_date = datetime.date.today(),
+            
+            user_profile_picture = user_pic
     
         )
     
@@ -152,6 +181,7 @@ def register_password():
 @auth.route('/logout')
 @auth.route('/logout/')
 @login_required
+
 def logout():
     
     logout_user()

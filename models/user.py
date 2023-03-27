@@ -23,7 +23,9 @@ class User(UserMixin, db.Model):
 
     user_lastname = sa.Column(sa.String(60))
     
-    user_creation_date: orm.Mapped[datetime.date] = orm.mapped_column(nullable=True)
+    user_creation_date: orm.Mapped[datetime.date] = orm.mapped_column()
+    
+    user_profile_picture = sa.Column(sa.String(600))
 
     contracts: orm.Mapped[List["Contract"]] = orm.relationship(back_populates = "user", cascade="all, delete")
     

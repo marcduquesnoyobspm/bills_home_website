@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask
 from flask_migrate import Migrate
 from flask_moment import Moment
 from .controllers import login_manager
@@ -31,5 +31,11 @@ def create_app(config_class=Config):
     app.register_blueprint(user_blueprint)
     app.register_blueprint(overview_blueprint)
     app.register_blueprint(contract_blueprint)
+
+    app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    )
 
     return app

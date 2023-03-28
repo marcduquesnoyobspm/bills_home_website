@@ -31,7 +31,7 @@ def add_contract():
         contract.set_num(form.num_contract.data)
         db.session.add(contract)
         db.session.commit()
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     return render_template('add_contract.html', form=form)
 
 
@@ -65,7 +65,7 @@ def update_contract(id):
         contract_to_show.set_num(form.num_contract.data)
         db.session.add(contract_to_show)
         db.session.commit()
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     return render_template('update_contract.html', form=form, contract_to_show=contract_to_show, identifiant=identifiant, password=password, num=num)
 
 
@@ -75,8 +75,8 @@ def delete_contract(id):
     contract_to_delete = db.session.query(Contract).filter(Contract.id == id, Contract.user_id == current_user.id).first()
     if contract_to_delete is None:
         flash("Erreur")
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     else:
         db.session.delete(contract_to_delete)
         db.session.commit()
-    return redirect(url_for('overview.overview_page'))
+    return redirect(url_for('controllers.overview.overview_page'))

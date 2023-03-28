@@ -5,7 +5,7 @@
 
 
 <div id="step2">
-    <form id="identifiantForm" action="" method="post">
+    <form id="identifiantForm" action="" method="post" autocomplete="off">
         {{ more_infos_form.hidden_tag() }}
         <p>
             {{ more_infos_form.identifiant.label }}<br> {{ more_infos_form.identifiant(size=60) }}<br> {% for error in more_infos_form.identifiant.errors %}
@@ -24,7 +24,7 @@
 </div>
 
 <div id="step3">
-    <form id="passwordForm" action="{{ url_for('auth.register_password') }}" method="post">
+    <form id="passwordForm" action="{{ url_for('controllers.auth.register_password') }}" method="post" autocomplete="off">
         {{ password_form.hidden_tag() }}
         <p>{{ password_form.password }} {% for error in password_form.password.errors %}
             <span style="color: red;">[{{ error }}]</span> {% endfor %}
@@ -59,7 +59,7 @@
         let formData = new FormData(form);
         let csrf_token = document.getElementById("csrf_token").value;
         formData.append("csrf_token", csrf_token);
-        test_url = {{ url_for('auth.register_more_infos')|tojson }};
+        test_url = {{ url_for('controllers.auth.register_more_infos')|tojson }};
         fetch(test_url, {
                 "method": "POST",
                 "body": formData

@@ -13,7 +13,7 @@ def welcome_page():
 
     if current_user.is_authenticated:
 
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
 
     form = StartRegistrationForm()
 
@@ -21,6 +21,6 @@ def welcome_page():
 
         session['user_email'] = form.email.data
 
-        return redirect(url_for('auth.register'))
+        return redirect(url_for('controllers.auth.register'))
 
     return render_template('welcome.html', form=form)

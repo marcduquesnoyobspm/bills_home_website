@@ -33,7 +33,7 @@ def update_user():
         current_user.user_email = form.email.data
         current_user.set_password(form.future_password.data)
         db.session.commit()
-        return redirect(url_for('user.profile_page'))
+        return redirect(url_for('controllers.user.profile_page'))
     return render_template('profile.html', form = form, user = current_user)
     
 
@@ -42,4 +42,4 @@ def update_user():
 def delete_user():
     db.session.delete(current_user)
     db.session.commit()
-    return redirect(url_for('overview.overview_page'))
+    return redirect(url_for('controllers.overview.overview_page'))

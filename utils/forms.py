@@ -45,7 +45,7 @@ class FinalRegistrationForm(FlaskForm):
     password = PasswordField('Mot de passe', validators=[
         DataRequired(),
         Regexp(regex="^(?=.*([A-Z]){1,})(?=.*[!@#$&*]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,}$")
-        ])
+        ], render_kw={"autocomplete":"new-password"})
        
     remember_me = BooleanField('Se souvenir de moi')
     

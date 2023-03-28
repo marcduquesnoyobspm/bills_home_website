@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session, make_response
+from flask import Blueprint, render_template, flash, redirect, url_for, session
 from flask_login import login_user, login_required, logout_user, current_user
 import datetime, os, random
 
@@ -16,7 +16,7 @@ def login():
     
     if current_user.is_authenticated:
     
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     
     form = LoginForm()
     
@@ -28,21 +28,13 @@ def login():
     
             flash('Invalid email or password')
     
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('controllers.auth.login'))
     
         login_user(user, remember=form.remember_me.data)
     
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     
-    response = make_response(render_template('login.html', title='Log In', form=form))
-    
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'    
-    
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    
-    return response
+    return render_template('login.html', title='Log In', form=form)
 
 
 @auth.route('/signup', methods=['GET'])
@@ -55,35 +47,19 @@ def register():
     
     if current_user.is_authenticated:
     
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     
     else:
     
         if session.get('user_email') is None:
             
-            return redirect(url_for('welcome.welcome_page'))
+            return redirect(url_for('controllers.welcome.welcome_page'))
         
         elif session.get('user_identifiant') is not None:
             
-            response = make_response(render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 3))
-
-            response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-                
-            response.headers['X-Content-Type-Options'] = 'nosniff'
-            
-            response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-            
-            return response
-        
-    response = make_response(render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 2))
+            return render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 3)
     
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    
-    return response
+    return render_template('register.html', more_infos_form = more_infos_form, password_form = password_form, step = 2)
 
     
 @auth.route('/signup/more_infos', methods=['POST'])
@@ -94,17 +70,17 @@ def register_more_infos():
     
     if current_user.is_authenticated:
     
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     
     else:
     
         if session.get('user_email') is None:
             
-            return redirect(url_for('welcome.welcome_page'))
+            return redirect(url_for('controllers.welcome.welcome_page'))
         
         elif session.get('user_identifiant') is not None:
             
-            return redirect(url_for('auth.register'))
+            return redirect(url_for('controllers.auth.register'))
 
     if more_infos_form.validate_on_submit():
     
@@ -127,17 +103,17 @@ def register_password():
     
     if current_user.is_authenticated:
         
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
     
     else:
     
         if session.get('user_email') is None:
             
-            return redirect(url_for('welcome.welcome_page'))
+            return redirect(url_for('controllers.welcome.welcome_page'))
         
         elif session.get('user_identifiant') is None:
     
-            return redirect(url_for('auth.register'))
+            return redirect(url_for('controllers.auth.register'))
     
     if password_form.validate_on_submit():
         
@@ -175,7 +151,7 @@ def register_password():
 
         session.pop('user_lastname', None)
     
-        return redirect(url_for('overview.overview_page'))
+        return redirect(url_for('controllers.overview.overview_page'))
 
 
 @auth.route('/logout')
@@ -186,4 +162,4 @@ def logout():
     
     logout_user()
     
-    return redirect(url_for('welcome.welcome_page'))
+    return redirect(url_for('controllers.welcome.welcome_page'))

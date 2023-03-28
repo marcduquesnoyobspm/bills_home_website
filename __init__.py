@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_moment import Moment
-from .controllers import login_manager
+from .controllers import login_manager, controllers, init_controllers
 from .models import db, bcrypt
 from .utils.config import Config
 
@@ -21,16 +21,9 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
-    from .controllers.auth import auth as auth_blueprint
-    from .controllers.welcome import welcome as welcome_blueprint
-    from .controllers.user import user as user_blueprint
-    from .controllers.overview import overview as overview_blueprint
-    from .controllers.contract import contract as contract_blueprint
-    app.register_blueprint(auth_blueprint)
-    app.register_blueprint(welcome_blueprint)
-    app.register_blueprint(user_blueprint)
-    app.register_blueprint(overview_blueprint)
-    app.register_blueprint(contract_blueprint)
+    init_controllers()
+    
+    app.register_blueprint(controllers)
 
     app.config.update(
     SESSION_COOKIE_SECURE=True,

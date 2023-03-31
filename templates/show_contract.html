@@ -3,7 +3,7 @@
 {% block content %}
 
     <h1>{{ contract_to_show.contract_name }}</h1>
-    <form action="" method="post" novalidate>
+    <form action="" method="post" novalidate autocomplete="off">
         {{ form.hidden_tag() }}
         <p>
             {{ form.entreprise.label }}<br>
@@ -61,7 +61,7 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <a href="{{ url_for('contract.update_contract', id=contract_to_show.id) }}">Modifier le contrat</a>
+        <a href="{{ url_for('controllers.contract.update_contract', id=contract_to_show.id) }}">Modifier le contrat</a>
     </form>
 
     <!-- <script>

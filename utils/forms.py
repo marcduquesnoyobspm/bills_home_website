@@ -91,13 +91,13 @@ class UpdateProfileForm(FlaskForm):
 
     email = StringField('Email', validators=[DataRequired(), Email()])
 
-    current_password = PasswordField('Mot de passe actuel', validators=[DataRequired()])
+    current_password = PasswordField('Mot de passe actuel', validators=[DataRequired()], render_kw={"autocomplete":"new-password"})
     
     future_password = PasswordField('Futur mot de passe', validators=[
-                              DataRequired()])
+                              DataRequired()], render_kw={"autocomplete":"new-password"})
 
     confirmation_future_password = PasswordField('Confirmation du futur mot de passe', validators=[
-                              DataRequired(), EqualTo('future_password')])
+                              DataRequired(), EqualTo('future_password')], render_kw={"autocomplete":"new-password"})
 
     submit = SubmitField('Modifier son profil')
 
@@ -152,7 +152,7 @@ class AddContractForm(FlaskForm):
 
     identifiant = StringField("Identifiant de votre compte sur le site de l'entreprise")
 
-    password = PasswordField("Mot de passe de votre compte sur le site de l'entreprise")
+    password = PasswordField("Mot de passe de votre compte sur le site de l'entreprise", render_kw={"autocomplete":"new-password"})
 
     num_contract = StringField('Numéro du contrat')
 
@@ -179,7 +179,7 @@ class UpdateContractForm(FlaskForm):
 
     num_contract = StringField('Numéro du contrat')
 
-    mens = DecimalField('Montant de la mensualité')
+    mens = DecimalField('Montant de la mensualité', places = 2, rounding = 2, render_kw={"oninput":"testDecimalNumber()"})
 
     date = DateField('Date de renouvellement du contrat')
 

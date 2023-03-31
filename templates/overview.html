@@ -1,43 +1,69 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<div>
+  <div>
+    <img
+      src="{{ url_for('static', filename='') }}{{ current_user.user_profile_picture }}"
+    />
+    <p>{{ current_user.user_identifiant }}</p>
+  </div>
 
-{% block content %}
+  <div>
+    <nav>
+      <ul>
+        <li>
+          <a
+            id="overview"
+            href="/overview"
+            onclick="navigateInOverviewTabs(event)"
+            >Overview</a
+          >
+        </li>
+        <li>
+          <a
+            id="contracts"
+            href="/overview?tab=contracts"
+            onclick="navigateInOverviewTabs(event)"
+            >Contrats {{ current_user.contracts|length }}</a
+          >
+        </li>
+      </ul>
+    </nav>
 
-    
-        <h1>Hi, {{ current_user.user_email }}!</h1>
-        <img src="{{ url_for('static', filename='') }}{{ current_user.user_profile_picture }}"/>
-        <nav>
-            <ul>
-                <li>
-                    <a href="#test">Clic</a>
-                </li>
-            </ul>
+    <div id="overview_div">Je suis dans overview</div>
+    <div id="contracts_div">
+      <a href="{{ url_for('controllers.contract.add_contract') }}"
+        >Ajouter un contrat</a
+      >
+      {% for contract in current_user.contracts %}
+      <p>{{ contract.contract_category }}</p>
+      <p>{{ contract.contract_name }}</p>
+      <p>{{ contract.contract_mens }}</p>
+      <a
+        href="{{ url_for('controllers.contract.show_contract', id=contract.id) }}"
+        >Voir le contrat</a
+      >
+      {% endfor %}
+    </div>
+  </div>
 
-        </nav>
-        <a href="{{ url_for('controllers.contract.add_contract') }}">Ajouter un contrat</a>
-        {% for contract in current_user.contracts %}
-            <p>{{ contract.contract_category }}</p>
-            <p>{{ contract.contract_name }}</p>
-            <p>{{ contract.contract_mens }}</p>
-            <a href="{{ url_for('controllers.contract.show_contract', id=contract.id) }}">Voir le contrat</a>
-        {% endfor %}
-        
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
+  <script type="text/javascript">
+    let tab = "{{ tab }}";
+    console.log(tab);
+    window.onload = toggleNav(tab);
 
-        <p id="test">Voilà le test est bon</p>
+    function toggleNav(tab) {
+      document.getElementById("overview_div").style.display = "none";
+      document.getElementById("contracts_div").style.display = "none";
+      document.getElementById(tab + "_div").style.display = "block";
+    }
 
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore nulla commodi autem quisquam maiores nisi nihil nobis quia! Impedit nemo veritatis saepe doloremque blanditiis nulla cum officiis! Reprehenderit, saepe?</p>
-
-        {% endblock %}
+    function navigateInOverviewTabs(event) {
+      event.preventDefault();
+      let tab = event.target;
+      test_url = tab.getAttribute("href");
+      window.history.pushState(null, "", test_url);
+      toggleNav(tab.id);
+    }
+  </script>
+</div>
+{% endblock %}

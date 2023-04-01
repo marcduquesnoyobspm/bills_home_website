@@ -81,6 +81,15 @@ class MoreInfosRegistrationForm(FlaskForm):
                 raise ValidationError('Please use a different identifiant.')
 
 
+class OverviewUpdateProfileForm(FlaskForm):
+    
+    first_name = StringField("Prénom")
+    
+    last_name = StringField("Nom")
+    
+    submit = SubmitField('Modifier son profil', render_kw = {"onclick":"submitOverviewUpdateProfileForm(event)"})
+
+
 class UpdateProfileForm(FlaskForm):
 
     identifiant = StringField('Identifiant', validators=[DataRequired()])

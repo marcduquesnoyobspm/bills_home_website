@@ -4,7 +4,40 @@
     <img
       src="{{ url_for('static', filename='') }}{{ current_user.user_profile_picture }}"
     />
-    <p>{{ current_user.user_identifiant }}</p>
+    <div id="user_infos">
+      <div>
+        <p id="user_name">
+          {{ current_user.user_firstname }} {{ current_user.user_lastname }}
+        </p>
+        <p>{{ current_user.user_identifiant }}</p>
+      </div>
+
+      <input
+        type="button"
+        value="Modifier son profil"
+        onclick="toggleForm('on')"
+      />
+    </div>
+
+    <div id="profile_form_div">
+      <form id="profile_form" action="" method="post" autocomplete="off">
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.first_name.label }} {{ form.first_name(value =
+          current_user.user_firstname ) }} {% for error in
+          form.first_name.errors %}
+          <span style="color: red">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>
+          {{ form.last_name.label }} {{ form.last_name(value =
+          current_user.user_lastname ) }} {% for error in form.last_name.errors
+          %}
+          <span style="color: red">[{{ error }}]</span> {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+        <input type="button" value="Annuler" onclick="toggleForm('off')" />
+      </form>
+    </div>
   </div>
 
   <div>
@@ -50,12 +83,13 @@
     let tab = "{{ tab }}";
     console.log(tab);
     window.onload = toggleNav(tab);
+    window.onload = toggleForm("off");
 
     function toggleNav(tab) {
       document.getElementById("overview_div").style.display = "none";
       document.getElementById("contracts_div").style.display = "none";
       document.getElementById(tab + "_div").style.display = "block";
-    }
+    };
 
     function navigateInOverviewTabs(event) {
       event.preventDefault();
@@ -63,7 +97,45 @@
       test_url = tab.getAttribute("href");
       window.history.pushState(null, "", test_url);
       toggleNav(tab.id);
+    };
+
+    function refreshUserData(){
+      document.getElementById("first_name").value = "{{ current_user.user_firstname }}"
+      document.getElementById("last_name").value = "{{ current_user.user_lastname }}"
+      document.getElementById("user_name").innerHTML = "<p>{{ current_user.user_firstname }} {{ current_user.user_lastname }}</p>"
     }
+
+    function toggleForm(state){
+      refreshUserData()
+      if (state == "on"){
+        document.getElementById("profile_form_div").style.display = "block";
+        document.getElementById("user_infos").style.display = "none";
+      } else {
+        document.getElementById("profile_form_div").style.display = "none";
+        document.getElementById("user_infos").style.display = "block";
+      } 
+    };
+
+    function submitOverviewUpdateProfileForm(event){
+      event.preventDefault();
+      let form = document.getElementById("profile_form");
+      let formData = new FormData(form);
+      let csrf_token = document.getElementById("csrf_token").value;
+      formData.append("csrf_token", csrf_token);
+      form_url = {{ url_for('controllers.overview.overview_update_profile')|tojson }};
+      fetch(form_url, {
+              "method": "POST",
+              "body": formData
+          }).then(response => response.json())
+          .then(data => {
+              console.log(data.success);
+              if (data.success) {
+                toggleForm("off");
+              } else {
+                toggleForm("on");
+              };
+          });
+    };
   </script>
 </div>
 {% endblock %}

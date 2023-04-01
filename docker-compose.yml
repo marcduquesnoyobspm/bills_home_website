@@ -1,0 +1,30 @@
+version: "2"
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+
+services:
+  app:
+    build: .
+    command: flask run --host=0.0.0.0
+    links:
+      - db
+    ports:
+      - "5000:5000"
+
+  db:
+    image: mysql:latest
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_DATABASE: billshome
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - ./db:/var/lib/db
+    secrets:
+      - db_password
+      - db_root_password

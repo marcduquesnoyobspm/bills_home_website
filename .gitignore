@@ -1,0 +1,7 @@
+webenv/
+.env/
+.vscode/
+__pycache__/
+config.py
+key.txt
+secrets/

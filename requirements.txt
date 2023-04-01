@@ -10,8 +10,10 @@ flask_login==0.6.2
 flask_migrate==4.0.4
 flask-moment==1.0.5
 flask_sqlalchemy==3.0.3
+flask-talisman==1.0.0
 flask_wtf==1.1.1
 flask-sock==0.6.0
+gunicorn==20.1.0
 h11==0.14.0
 pymysql==1.0.2
 simple-websocket==0.9.0

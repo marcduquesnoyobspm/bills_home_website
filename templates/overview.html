@@ -1,9 +1,7 @@
 {% extends "base.html" %} {% block content %}
 <div>
   <div>
-    <img
-      src="{{ url_for('static', filename='') }}{{ current_user.user_profile_picture }}"
-    />
+    <img src="{{ url_for('static', filename='') }}{{ current_user.user_profile_picture }}" />
     <div id="user_infos">
       <div>
         <p id="user_name">
@@ -12,11 +10,7 @@
         <p>{{ current_user.user_identifiant }}</p>
       </div>
 
-      <input
-        type="button"
-        value="Modifier son profil"
-        onclick="toggleForm('on')"
-      />
+      <input type="button" value="Modifier son profil" onclick="toggleForm('on')" />
     </div>
 
     <div id="profile_form_div">
@@ -44,37 +38,23 @@
     <nav>
       <ul>
         <li>
-          <a
-            id="overview"
-            href="/overview"
-            onclick="navigateInOverviewTabs(event)"
-            >Overview</a
-          >
+          <a id="overview" href="/overview" onclick="navigateInOverviewTabs(event)">Overview</a>
         </li>
         <li>
-          <a
-            id="contracts"
-            href="/overview?tab=contracts"
-            onclick="navigateInOverviewTabs(event)"
-            >Contrats {{ current_user.contracts|length }}</a
-          >
+          <a id="contracts" href="/overview?tab=contracts" onclick="navigateInOverviewTabs(event)">Contrats {{
+            current_user.contracts|length }}</a>
         </li>
       </ul>
     </nav>
 
     <div id="overview_div">Je suis dans overview</div>
     <div id="contracts_div">
-      <a href="{{ url_for('controllers.contract.add_contract') }}"
-        >Ajouter un contrat</a
-      >
+      <a href="{{ url_for('controllers.contract.add_contract') }}">Ajouter un contrat</a>
       {% for contract in current_user.contracts %}
       <p>{{ contract.contract_category }}</p>
       <p>{{ contract.contract_name }}</p>
       <p>{{ contract.contract_mens }}</p>
-      <a
-        href="{{ url_for('controllers.contract.show_contract', id=contract.id) }}"
-        >Voir le contrat</a
-      >
+      <a href="{{ url_for('controllers.contract.show_contract', id=contract.id) }}">Voir le contrat</a>
       {% endfor %}
     </div>
   </div>
@@ -99,43 +79,42 @@
       toggleNav(tab.id);
     };
 
-    function refreshUserData(){
-      document.getElementById("first_name").value = "{{ current_user.user_firstname }}"
-      document.getElementById("last_name").value = "{{ current_user.user_lastname }}"
-      document.getElementById("user_name").innerHTML = "<p>{{ current_user.user_firstname }} {{ current_user.user_lastname }}</p>"
+    function refreshUserData(first_name, last_name) {
+      document.getElementById("first_name").value = first_name
+      document.getElementById("last_name").value = last_name
+      document.getElementById("user_name").innerHTML = "<p>" + first_name + " " + last_name + "</p>"
     }
 
-    function toggleForm(state){
-      refreshUserData()
-      if (state == "on"){
+    function toggleForm(state) {
+      if (state == "on") {
         document.getElementById("profile_form_div").style.display = "block";
         document.getElementById("user_infos").style.display = "none";
       } else {
         document.getElementById("profile_form_div").style.display = "none";
         document.getElementById("user_infos").style.display = "block";
-      } 
+      }
     };
 
-    function submitOverviewUpdateProfileForm(event){
+    function submitOverviewUpdateProfileForm(event) {
       event.preventDefault();
       let form = document.getElementById("profile_form");
       let formData = new FormData(form);
       let csrf_token = document.getElementById("csrf_token").value;
       formData.append("csrf_token", csrf_token);
-      form_url = {{ url_for('controllers.overview.overview_update_profile')|tojson }};
+      form_url = {{ url_for('controllers.overview.overview_update_profile') | tojson }};
       fetch(form_url, {
-              "method": "POST",
-              "body": formData
-          }).then(response => response.json())
-          .then(data => {
-              console.log(data.success);
-              if (data.success) {
-                toggleForm("off");
-              } else {
-                toggleForm("on");
-              };
-          });
-    };
+        "method": "POST",
+        "body": formData
+      }).then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            toggleForm("off");
+          } else {
+            toggleForm("on");
+          };
+          refreshUserData(data.first_name, data.last_name);
+        });
+        };
   </script>
 </div>
 {% endblock %}

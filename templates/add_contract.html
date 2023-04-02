@@ -3,83 +3,83 @@
 {% block content %}
 
 
-    <h1>Add contract</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.category.label }}<br>
-            {{ form.category }}<br>
-            {% for error in form.category.errors %}
-            <span style="color: red;">[{{ category }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.name.label }}<br>
-            {{ form.name }}<br>
-            {% for error in form.name.errors %}
-            <span style="color: red;">[{{ name }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.entreprise.label }}<br>
-            {{ form.entreprise(size=60) }}<br>
-            {% for error in form.entreprise.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.url.label }}<br>
-            {{ form.url(size=60) }}<br>
-            {% for error in form.url.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.identifiant.label }}<br>
-            {{ form.identifiant(size=60) }}<br>
-            {% for error in form.identifiant.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=60) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.num_contract.label }}<br>
-            {{ form.num_contract(size=60) }}<br>
-            {% for error in form.num_contract.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.mens.label }}<br>
-            {{ form.mens }}<br>
-            {% for error in form.mens.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.date.label }}<br>
-            {{ form.date }}<br>
-            {% for error in form.date.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.more_infos.label }}<br>
-            {{ form.more_infos(size=60) }}<br>
-            {% for error in form.more_infos.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+<h1>Add contract</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.category.label }}<br>
+        {{ form.category }}<br>
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ category }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name }}<br>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ name }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.entreprise.label }}<br>
+        {{ form.entreprise(size=60) }}<br>
+        {% for error in form.entreprise.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.url.label }}<br>
+        {{ form.url(size=60) }}<br>
+        {% for error in form.url.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.identifiant.label }}<br>
+        {{ form.identifiant(size=60) }}<br>
+        {% for error in form.identifiant.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(size=60) }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.num_contract.label }}<br>
+        {{ form.num_contract(size=60) }}<br>
+        {% for error in form.num_contract.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.mens.label }}<br>
+        {{ form.mens }}<br>
+        {% for error in form.mens.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.date.label }}<br>
+        {{ form.date }}<br>
+        {% for error in form.date.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.more_infos.label }}<br>
+        {{ form.more_infos(size=60) }}<br>
+        {% for error in form.more_infos.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
 
-    <!-- <script>
+<!-- <script>
         function gazSelected(){
             "use strict";
             var category = document.getElementById("category").value;
@@ -93,4 +93,5 @@
             }
         };
     </script> -->
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 {% endblock %}

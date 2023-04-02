@@ -2,69 +2,69 @@
 
 {% block content %}
 
-    <h1>{{ contract_to_show.contract_name }}</h1>
-    <form action="" method="post" novalidate autocomplete="off">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.entreprise.label }}<br>
-            {{ form.entreprise(value=contract_to_show.contract_entreprise) }}<br>
-            {% for error in form.entreprise.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.url.label }}<br>
-            {{ form.url(value=contract_to_show.contract_url) }}<br>
-            {% for error in form.url.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.identifiant.label }}<br>
-            {{ form.identifiant(value=identifiant) }}<br>
-            {% for error in form.identifiant.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(value=password) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.num_contract.label }}<br>
-            {{ form.num_contract(value=num) }}<br>
-            {% for error in form.num_contract.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.mens.label }}<br>
-            {{ form.mens(value=contract_to_show.contract_mens) }}<br>
-            {% for error in form.mens.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.date.label }}<br>
-            {{ form.date(value=contract_to_show.contract_date) }}<br>
-            {% for error in form.date.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.more_infos.label }}<br>
-            {{ form.more_infos(value=contract_to_show.contract_more_infos) }}<br>
-            {% for error in form.more_infos.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <a href="{{ url_for('controllers.contract.update_contract', id=contract_to_show.id) }}">Modifier le contrat</a>
-    </form>
+<h1>{{ contract_to_show.contract_name }}</h1>
+<form action="" method="post" novalidate autocomplete="off">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.entreprise.label }}<br>
+        {{ form.entreprise(value=contract_to_show.contract_entreprise) }}<br>
+        {% for error in form.entreprise.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.url.label }}<br>
+        {{ form.url(value=contract_to_show.contract_url) }}<br>
+        {% for error in form.url.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.identifiant.label }}<br>
+        {{ form.identifiant(value=identifiant) }}<br>
+        {% for error in form.identifiant.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(value=password) }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.num_contract.label }}<br>
+        {{ form.num_contract(value=num) }}<br>
+        {% for error in form.num_contract.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.mens.label }}<br>
+        {{ form.mens(value=contract_to_show.contract_mens) }}<br>
+        {% for error in form.mens.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.date.label }}<br>
+        {{ form.date(value=contract_to_show.contract_date) }}<br>
+        {% for error in form.date.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.more_infos.label }}<br>
+        {{ form.more_infos(value=contract_to_show.contract_more_infos) }}<br>
+        {% for error in form.more_infos.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <a href="{{ url_for('controllers.contract.update_contract', id=contract_to_show.id) }}">Modifier le contrat</a>
+</form>
 
-    <!-- <script>
+<!-- <script>
         function gazSelected(){
             "use strict";
             var category = document.getElementById("category").value;
@@ -78,4 +78,17 @@
             }
         };
     </script> -->
+
+<script type="text/javascript">
+    var value = document.getElementById("mens").value;
+    window.onload = displayTwoDigits();
+    function displayTwoDigits() {
+        var second_numbers_regex = /^\d+[\.\,]+\d{2}$/;
+
+        if (!second_numbers_regex.test(value)) {
+            document.getElementById("mens").value = parseFloat(value).toFixed(2);
+        }
+
+    }
+</script>
 {% endblock %}

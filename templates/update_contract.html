@@ -3,93 +3,82 @@
 {% block content %}
 
 
-    <h1>{{ contract_to_show.contract_name }}</h1>
-    <form action="" method="post" novalidate  autocomplete="off">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.entreprise.label }}<br>
-            {{ form.entreprise(value=contract_to_show.contract_entreprise) }}<br>
-            {% for error in form.entreprise.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.url.label }}<br>
-            {{ form.url(value=contract_to_show.contract_url) }}<br>
-            {% for error in form.url.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.identifiant.label }}<br>
-            {{ form.identifiant(value=identifiant) }}<br>
-            {% for error in form.identifiant.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(value=password) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.num_contract.label }}<br>
-            {{ form.num_contract(value=num) }}<br>
-            {% for error in form.num_contract.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.mens.label }}<br>
-            {{ form.mens(value=contract_to_show.contract_mens) }}<br>
-            {% for error in form.mens.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.date.label }}<br>
-            {{ form.date(value=contract_to_show.contract_date) }}<br>
-            {% for error in form.date.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.more_infos.label }}<br>
-            {{ form.more_infos(value=contract_to_show.contract_more_infos) }}<br>
-            {% for error in form.more_infos.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.update_submit() }}</p>
-        <a href="{{ url_for('controllers.contract.delete_contract', id=contract_to_show.id) }}">Supprimer le contrat</a>
-    </form>
+<h1>{{ contract_to_show.contract_name }}</h1>
+<form action="" method="post" novalidate autocomplete="off">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.entreprise.label }}<br>
+        {{ form.entreprise(value=contract_to_show.contract_entreprise) }}<br>
+        {% for error in form.entreprise.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.url.label }}<br>
+        {{ form.url(value=contract_to_show.contract_url) }}<br>
+        {% for error in form.url.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.identifiant.label }}<br>
+        {{ form.identifiant(value=identifiant) }}<br>
+        {% for error in form.identifiant.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(value=password) }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.num_contract.label }}<br>
+        {{ form.num_contract(value=num) }}<br>
+        {% for error in form.num_contract.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.mens.label }}<br>
+        {{ form.mens(value=contract_to_show.contract_mens) }}<br>
+        {% for error in form.mens.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.date.label }}<br>
+        {{ form.date(value=contract_to_show.contract_date) }}<br>
+        {% for error in form.date.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.more_infos.label }}<br>
+        {{ form.more_infos(value=contract_to_show.contract_more_infos) }}<br>
+        {% for error in form.more_infos.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.update_submit() }}</p>
+    <a href="{{ url_for('controllers.contract.delete_contract', id=contract_to_show.id) }}">Supprimer le contrat</a>
+</form>
 
-    <script>
-        var value = document.getElementById("mens").value
-
-        function testDecimalNumber(){
-            let new_value = document.getElementById("mens").value
-            console.log(value, new_value)
-            var regexpression = /^\d+[\.\,]?\d{1,2}$/;
-            if (!regexpression.test(new_value)) {
-                document.getElementById("mens").value = value;
-            } else {
-                value = new_value
-            };
+<script>
+    function gazSelected() {
+        "use strict";
+        var category = document.getElementById("category").value;
+        console.log(category);
+        if (category != "Gaz") {
+            document.getElementById("disp").style.display = 'block';
+            document.getElementById("test_label").innerText = "J'ai changé";
+        } else {
+            document.getElementById("disp").style.display = 'none';
+            document.getElementById("test_label").innerText = "Je ne veux pas le voir";
         }
-        function gazSelected(){
-            "use strict";
-            var category = document.getElementById("category").value;
-            console.log(category);
-            if( category != "Gaz"){
-                    document.getElementById("disp").style.display = 'block';
-                    document.getElementById("test_label").innerText = "J'ai changé";
-            }else{
-                document.getElementById("disp").style.display = 'none';
-                document.getElementById("test_label").innerText = "Je ne veux pas le voir";
-            }
-        };
-    </script>
+    };
+</script>
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 {% endblock %}

@@ -42,7 +42,7 @@
     </p>
     <p>
         {{ form.mens.label }}<br>
-        {{ form.mens(value=contract_to_show.contract_mens) }}<br>
+        {{ form.mens(value=contract_to_show.contract_mens) }}<span>€</span><br>
         {% for error in form.mens.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}

@@ -63,7 +63,7 @@ function displayTwoDigits() {
     var second_numbers_regex = /^\d+[\.\,]+\d{2}$/;
 
     if (!second_numbers_regex.test(value)) {
-      mens.innerHTML = parseFloat(value).toFixed(2);
+      mens.innerHTML = parseFloat(value).toFixed(2) + "<span>€</span>";
     }
   }
 }

@@ -2,8 +2,7 @@
 
 {% block content %}
 
-    
-<form action="" method="post">
+<form id=changeIdentifiantForm action="" method="post">
     {{ form.hidden_tag() }}
     <p>
         {{ form.identifiant.label }}<br>
@@ -13,19 +12,17 @@
         {% endfor %}
     </p>
     <p>
-        {{ form.first_name.label }}<br>
-        {{ form.first_name(value=current_user.user_firstname) }}<br>
-        {% for error in form.first_name.errors %}
+        {{ form.password.label }}<br>
+        {{ form.password }}<br>
+        {% for error in form.password.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <p>
-        {{ form.last_name.label }}<br>
-        {{ form.last_name(value=current_user.user_lastname) }}<br>
-        {% for error in form.last_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+
+<form id=changeEmailForm action="" method="post">
+    {{ form.hidden_tag() }}
     <p>
         {{ form.email.label }}<br>
         {{ form.email(value=current_user.user_email) }}<br>
@@ -33,6 +30,18 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+
+<form id=changePasswordForm action="" method="post">
+    {{ form.hidden_tag() }}
     <p>
         {{ form.current_password.label }}<br>
         {{ form.current_password }}<br>
@@ -55,8 +64,9 @@
         {% endfor %}
     </p>
     <p>{{ form.submit() }}</p>
-    <a href="{{ url_for('controllers.user.delete_user') }}">Supprimer le compte</a>
 </form>
-        
+
+<a href="{{ url_for('controllers.user.delete_user') }}">Supprimer le compte</a>
+
 
 {% endblock %}

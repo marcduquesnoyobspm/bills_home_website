@@ -15,9 +15,11 @@
         <header class=metanav>
             <div>
                 {% if not current_user.is_authenticated %}
-                <a type=button href="{{ url_for('controllers.auth.login') }}">S'identifier</a> {% else %}
+                <a type=button href="{{ url_for('controllers.auth.login') }}">S'identifier</a>
+                {% else %}
                 <a href="{{ url_for('controllers.user.profile_page') }}">profile</a>
-                <a href="{{ url_for('controllers.auth.logout') }}">Log out</a> {% endif %}
+                <a href="{{ url_for('controllers.auth.logout') }}">Log out</a>
+                {% endif %}
             </div>
         </header>
         {% block content %}{% endblock %}

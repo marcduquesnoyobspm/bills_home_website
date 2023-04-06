@@ -3,7 +3,7 @@
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>
-        {{ form.email.label }}<br> {{ form.email(size=32) }} {% for error in form.email.errors %}
+        {{ form.identifiant.label }}<br> {{ form.identifiant(size=32) }} {% for error in form.identifiant.errors %}
         <span style="color: red;">[{{ error }}]</span> {% endfor %}
     </p>
     <p>

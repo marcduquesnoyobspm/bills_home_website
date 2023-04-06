@@ -8,15 +8,18 @@
     <form id="identifiantForm" action="" method="post" autocomplete="off">
         {{ more_infos_form.hidden_tag() }}
         <p>
-            {{ more_infos_form.identifiant.label }}<br> {{ more_infos_form.identifiant(size=60) }}<br> {% for error in more_infos_form.identifiant.errors %}
+            {{ more_infos_form.identifiant.label }}<br> {{ more_infos_form.identifiant(size=60) }}<br> {% for error in
+            more_infos_form.identifiant.errors %}
             <span style="color: red;">[{{ error }}]</span> {% endfor %}
         </p>
         <p>
-            {{ more_infos_form.first_name.label }}<br> {{ more_infos_form.first_name(size=32) }}<br> {% for error in more_infos_form.first_name.errors %}
+            {{ more_infos_form.first_name.label }}<br> {{ more_infos_form.first_name(size=32) }}<br> {% for error in
+            more_infos_form.first_name.errors %}
             <span style="color: red;">[{{ error }}]</span> {% endfor %}
         </p>
         <p>
-            {{ more_infos_form.last_name.label }}<br> {{ more_infos_form.last_name(size=32) }}<br> {% for error in more_infos_form.last_name.errors %}
+            {{ more_infos_form.last_name.label }}<br> {{ more_infos_form.last_name(size=32) }}<br> {% for error in
+            more_infos_form.last_name.errors %}
             <span style="color: red;">[{{ error }}]</span> {% endfor %}
         </p>
         <p>{{ more_infos_form.submit() }}</p>
@@ -24,7 +27,8 @@
 </div>
 
 <div id="step3">
-    <form id="passwordForm" action="{{ url_for('controllers.auth.register_password') }}" method="post" autocomplete="off">
+    <form id="passwordForm" action="{{ url_for('controllers.auth.register_password') }}" method="post"
+        autocomplete="off">
         {{ password_form.hidden_tag() }}
         <p>{{ password_form.password }} {% for error in password_form.password.errors %}
             <span style="color: red;">[{{ error }}]</span> {% endfor %}
@@ -41,35 +45,35 @@
 <script type="text/javascript">
     window.onload = toggle_good_form()
 
-    function toggle_good_form(){
+    function toggle_good_form() {
         let step = {{ step }}
-        if (step == 2) {
-            document.getElementById("step2").style.display = "block"
-            document.getElementById("step3").style.display = "none"
-        } else {
-            document.getElementById("step2").style.display = "none";
-            document.getElementById("step3").style.display = "block";
-        }
+    if (step == 2) {
+        document.getElementById("step2").style.display = "block"
+        document.getElementById("step3").style.display = "none"
+    } else {
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("step3").style.display = "block";
+    }
     };
 
-    function submit_more_infos_form(event){
+    function submit_more_infos_form(event) {
         event.preventDefault();
         let form = document.getElementById("identifiantForm");
         let formData = new FormData(form);
         let csrf_token = document.getElementById("csrf_token").value;
         formData.append("csrf_token", csrf_token);
-        test_url = {{ url_for('controllers.auth.register_more_infos')|tojson }};
-        fetch(test_url, {
-                "method": "POST",
-                "body": formData
-            }).then(response => response.json())
-            .then(data => {
-                console.log(data.success);
-                if (data.success) {
-                    document.getElementById("step2").style.display = "none";
-                    document.getElementById("step3").style.display = "block";
-                }
-            })
+        test_url = {{ url_for('controllers.auth.register_more_infos') | tojson }};
+    fetch(test_url, {
+        "method": "POST",
+        "body": formData
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data.success);
+            if (data.success) {
+                document.getElementById("step2").style.display = "none";
+                document.getElementById("step3").style.display = "block";
+            }
+        })
 
         ;
     }

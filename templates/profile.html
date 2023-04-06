@@ -2,71 +2,168 @@
 
 {% block content %}
 
-<form id=changeIdentifiantForm action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.identifiant.label }}<br>
-        {{ form.identifiant(value=current_user.user_identifiant) }}<br>
-        {% for error in form.identifiant.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+<div>
+    <img id="profile_pic"
+        src="{{ url_for('static', filename='') }}{{ profile_pic_path }}{{ current_user.user_profile_picture }}" />
+    <button onclick="toggleForm('changeImageFormDiv')">Modifier son profil</button>
+</div>
+<div>
+    <p id="user_name">
+        {{ current_user.user_firstname }} {{ current_user.user_lastname }}
     </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password }}<br>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
+    <button onclick="toggleForm('changeInfosFormDiv')">Modifier son profil</button>
+</div>
+<div>
+    <p id="user_identifiant">{{ current_user.user_identifiant }}</p>
+    <button onclick="toggleForm('changeIdentifiantFormDiv')">Modifier</button>
+</div>
+<div>
+    <p id="user_email">{{ current_user.user_email }}</p>
+    <button onclick="toggleForm('changeEmailFormDiv')">Modifier</button>
+</div>
+<div>
+    <button onclick="toggleForm('changePasswordFormDiv')">Modifier</button>
+</div>
 
-<form id=changeEmailForm action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(value=current_user.user_email) }}<br>
-        {% for error in form.email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password }}<br>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
+<div id=changeImageFormDiv style="display:none">
+    <form id=changeImageForm action="" method="post" enctype="multipart/form-data">
+        {{ update_profile_image_form.hidden_tag() }}
+        <p>
+            {{ update_profile_image_form.image.label }}<br>
+            {{ update_profile_image_form.image }}<br>
+            {% for error in update_profile_image_form.image.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ update_profile_image_form.submit() }}</p>
+    </form>
+</div>
 
-<form id=changePasswordForm action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.current_password.label }}<br>
-        {{ form.current_password }}<br>
-        {% for error in form.current_password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.future_password.label }}<br>
-        {{ form.future_password(size=32) }}<br>
-        {% for error in form.future_password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.confirmation_future_password.label }}<br>
-        {{ form.confirmation_future_password(size=32) }}<br>
-        {% for error in form.confirmation_future_password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
+<div id=changeInfosFormDiv style="display:none">
+    <form id=changeInfosForm action="" method="post">
+        {{ update_profile_infos_form.hidden_tag() }}
+        <p>
+            {{ update_profile_infos_form.first_name.label }}<br>
+            {{ update_profile_infos_form.first_name(value=current_user.user_firstname) }}<br>
+            {% for error in update_profile_infos_form.first_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ update_profile_infos_form.last_name.label }}<br>
+            {{ update_profile_infos_form.last_name(value=current_user.user_lastname) }}<br>
+            {% for error in update_profile_infos_form.last_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ update_profile_infos_form.submit() }}</p>
+    </form>
+</div>
 
-<a href="{{ url_for('controllers.user.delete_user') }}">Supprimer le compte</a>
+<div id=changeIdentifiantFormDiv style="display:none">
+    <form id=changeIdentifiantForm action="" method="post">
+        {{ update_profile_identifiant_form.hidden_tag() }}
+        <p>
+            {{ update_profile_identifiant_form.identifiant.label }}<br>
+            {{ update_profile_identifiant_form.identifiant(value=current_user.user_identifiant) }}<br>
+            {% for error in update_profile_identifiant_form.identifiant.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ update_profile_identifiant_form.password.label }}<br>
+            {{ update_profile_identifiant_form.password }}<br>
+            {% for error in update_profile_identifiant_form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ update_profile_identifiant_form.submit() }}</p>
+    </form>
+</div>
 
+<div id=changeEmailFormDiv style="display:none">
+    <form id=changeEmailForm action="" method="post">
+        {{ update_profile_email_form.hidden_tag() }}
+        <p>
+            {{ update_profile_email_form.email.label }}<br>
+            {{ update_profile_email_form.email(value=current_user.user_email) }}<br>
+            {% for error in update_profile_email_form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ update_profile_email_form.password.label }}<br>
+            {{ update_profile_email_form.password }}<br>
+            {% for error in update_profile_email_form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ update_profile_email_form.submit() }}</p>
+    </form>
+</div>
 
+<div id=changePasswordFormDiv style="display:none">
+    <form id=changePasswordForm action="" method="post">
+        {{ update_profile_password_form.hidden_tag() }}
+        <p>
+            {{ update_profile_password_form.current_password.label }}<br>
+            {{ update_profile_password_form.current_password }}<br>
+            {% for error in update_profile_password_form.current_password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ update_profile_password_form.future_password.label }}<br>
+            {{ update_profile_password_form.future_password(size=32) }}<br>
+            {% for error in update_profile_password_form.future_password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ update_profile_password_form.confirmation_future_password.label }}<br>
+            {{ update_profile_password_form.confirmation_future_password(size=32) }}<br>
+            {% for error in update_profile_password_form.confirmation_future_password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ update_profile_password_form.submit() }}</p>
+    </form>
+</div>
+
+<div id=deleteUserFormDiv style="display:none">
+    <form id=deleteUserForm action="{{ url_for('controllers.user.delete_user') }}" method="post">
+        {{ delete_profile_form.hidden_tag() }}
+        <p>
+            {{ delete_profile_form.identifiant.label }}<br>
+            {{ delete_profile_form.identifiant }}<br>
+            {% for error in delete_profile_form.identifiant.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ delete_profile_form.password.label }}<br>
+            {{ delete_profile_form.password }}<br>
+            {% for error in delete_profile_form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ delete_profile_form.submit() }}</p>
+    </form>
+</div>
+
+<div>
+    <button onclick="toggleForm('deleteUserFormDiv')">Supprimer le compte</button>
+</div>
+
+<script type="text/javascript">
+
+    const update_image_url = {{ url_for('controllers.user.update_user_picture') | tojson }};
+    const update_infos_url = {{ url_for('controllers.user.update_user_infos') | tojson }};
+    const update_identifiant_url = {{ url_for('controllers.user.update_user_identifiant') | tojson }};
+    const update_email_url = {{ url_for('controllers.user.update_user_email') | tojson }};
+    const update_password_url = {{ url_for('controllers.user.update_user_password') | tojson }};
+
+</script>
+
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}

@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user, login_user, logout_user
 from ..utils.forms import OverviewUpdateProfileForm
@@ -18,7 +19,15 @@ def overview_page():
     if tab is None:
         tab = "overview"
 
-    return render_template("overview.html", form=form, tab=tab)
+    if "user" in current_user.user_profile_picture:
+        profile_pic_path = "images/upload/"
+
+    else:
+        profile_pic_path = "images/"
+
+    return render_template(
+        "overview.html", form=form, profile_pic_path=profile_pic_path, tab=tab
+    )
 
 
 @overview.route("/overview/update/profile", methods=["POST"])

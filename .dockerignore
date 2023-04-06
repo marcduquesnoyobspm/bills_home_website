@@ -20,3 +20,4 @@ coverage.xml
 .hypothesis
 README.md
 secrets
+static/images/upload/*

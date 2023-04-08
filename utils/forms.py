@@ -8,10 +8,13 @@ from wtforms import (
     SubmitField,
     DateField,
     SelectField,
+    HiddenField,
 )
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Regexp
 from ..models.user import User
 from sqlalchemy import func
+from .catalogue import entreprises
+from itertools import chain
 
 
 class LoginForm(FlaskForm):
@@ -110,11 +113,8 @@ class UpdateProfileImageForm(FlaskForm):
                 ],
                 "Le fichier doit être sous le format .jpeg, .jpg ou .png",
             ),
-        ]
-    )
-
-    submit = SubmitField(
-        "Modifier son profil", render_kw={"onclick": "send_image_form_data(event)"}
+        ],
+        render_kw={"onchange": "send_image_form_data(event)"},
     )
 
 
@@ -236,28 +236,31 @@ class DeleteProfileForm(FlaskForm):
 
 
 class AddContractForm(FlaskForm):
-    category_choices = [
-        "Electricité",
-        "Gaz",
-        "Téléphone",
-        "Internet",
-        "Assurance animal",
-        "Assurance Auto",
-        "Assurance Maison",
-    ]
+    category_choices = list(entreprises.keys())
 
     category = SelectField(
         "Catégorie du contrat",
-        choices=category_choices,
+        choices=[""] + category_choices,
         validators=[DataRequired()],
-        render_kw={"onchange": "gazSelected()"},
+        render_kw={"onchange": "categorySelected()"},
     )
 
     name = StringField("Nom du contrat")
 
-    entreprise = StringField("Entreprise")
-
-    url = StringField("URL")
+    entreprise = SelectField(
+        "Entreprise",
+        choices=list(
+            chain.from_iterable(
+                [""]
+                + [
+                    list(entreprises[category].keys())
+                    for category in list(entreprises.keys())
+                ]
+            )
+        ),
+        validators=[DataRequired()],
+        render_kw={"onchange": "entrepriseSelected()"},
+    )
 
     identifiant = StringField("Identifiant de votre compte sur le site de l'entreprise")
 
@@ -280,44 +283,17 @@ class AddContractForm(FlaskForm):
     submit = SubmitField("Ajouter le contrat")
 
 
-class UpdateContractForm(FlaskForm):
-    name = StringField("Nom du contrat")
-
-    entreprise = StringField("Entreprise")
-
-    url = StringField("URL")
-
-    identifiant = StringField("Identifiant de votre compte sur le site de l'entreprise")
-
-    password = StringField("Mot de passe de votre compte sur le site de l'entreprise")
-
-    num_contract = StringField("Numéro du contrat")
-
-    mens = StringField(
-        "Montant de la mensualité",
-        render_kw={"oninput": "testDecimalNumber()"},
-    )
-
-    date = DateField("Date de renouvellement du contrat")
-
-    more_infos = StringField("Plus d'informations sur le contrat")
-
-    update_submit = SubmitField("Modifier le contrat")
-
-
 class ShowContractForm(FlaskForm):
     name = StringField("Nom du contrat", render_kw={"readonly": True})
 
     entreprise = StringField("Entreprise", render_kw={"readonly": True})
-
-    url = StringField("URL", render_kw={"readonly": True})
 
     identifiant = StringField(
         "Identifiant de votre compte sur le site de l'entreprise",
         render_kw={"readonly": True},
     )
 
-    password = StringField(
+    password = PasswordField(
         "Mot de passe de votre compte sur le site de l'entreprise",
         render_kw={"readonly": True},
     )
@@ -331,3 +307,26 @@ class ShowContractForm(FlaskForm):
     more_infos = StringField(
         "Plus d'informations sur le contrat", render_kw={"readonly": True}
     )
+
+
+class UpdateContractForm(FlaskForm):
+    name = StringField("Nom du contrat")
+
+    entreprise = StringField("Entreprise")
+
+    identifiant = StringField("Identifiant de votre compte sur le site de l'entreprise")
+
+    password = PasswordField("Mot de passe de votre compte sur le site de l'entreprise")
+
+    num_contract = StringField("Numéro du contrat")
+
+    mens = StringField(
+        "Montant de la mensualité",
+        render_kw={"oninput": "testDecimalNumber()"},
+    )
+
+    date = DateField("Date de renouvellement du contrat")
+
+    more_infos = StringField("Informations complémentaires")
+
+    update_submit = SubmitField("Modifier le contrat")

@@ -1,10 +1,12 @@
-from flask import Blueprint, flash, redirect, render_template, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_required
 from datetime import date
 from ..models import db
 from ..models.contract import Contract
 from ..models.user import User
 from ..utils.forms import AddContractForm, UpdateContractForm, ShowContractForm
+from ..utils.catalogue import entreprises
+import os
 
 
 contract = Blueprint("contract", __name__)
@@ -14,12 +16,18 @@ contract = Blueprint("contract", __name__)
 @login_required
 def add_contract():
     form = AddContractForm()
+    os.system("echo je suis la")
+    try:
+        os.system("echo " + form.entreprise.data)
+    except:
+        pass
     if form.validate_on_submit():
+        os.system("echo je suis ici")
         contract = Contract(
             contract_category=form.category.data,
             contract_name=form.name.data,
             contract_entreprise=form.entreprise.data,
-            contract_url=form.url.data,
+            contract_url=entreprises[form.category.data][form.entreprise.data],
             contract_mens=float(form.mens.data.replace(",", ".")),
             contract_date=form.date.data,
             contract_more_infos=form.more_infos.data,
@@ -27,12 +35,19 @@ def add_contract():
             contract_popularity=0,
             contract_date_creation=date.today(),
         )
+
         contract.set_identifiant(form.identifiant.data)
+
         contract.set_password(form.password.data)
+
         contract.set_num(form.num_contract.data)
+
         db.session.add(contract)
+
         db.session.commit()
+
         return redirect(url_for("controllers.overview.overview_page"))
+
     return render_template("add_contract.html", form=form)
 
 
@@ -107,3 +122,12 @@ def delete_contract(id):
         db.session.delete(contract_to_delete)
         db.session.commit()
     return redirect(url_for("controllers.overview.overview_page"))
+
+
+@contract.route("/contract/add/entreprises-by-category", methods=["POST"])
+@login_required
+def load_entreprises_by_category():
+    form = AddContractForm()
+    selected_category = form.category.data
+    potential_entreprises = list(entreprises.get(selected_category).keys())
+    return {"success": True, "entreprises": potential_entreprises}

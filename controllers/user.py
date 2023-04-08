@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_required, current_user, login_user
+from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.utils import secure_filename
 
 from ..utils.forms import (
@@ -87,6 +87,11 @@ def update_user_picture():
             f"user_{current_user.id}_profile_pic{os.path.splitext(f.filename)[1]}"
         )
 
+        if "user" in current_user.user_profile_picture:
+            os.remove(
+                os.path.join("static/images/upload/", current_user.user_profile_picture)
+            )
+
         f.save(os.path.join("static/images/upload/", filename))
 
         current_user.user_profile_picture = filename
@@ -134,25 +139,21 @@ def update_user_email():
 @user.route("/profile/update/password", methods=["POST"])
 @login_required
 def update_user_password():
-    print("AU DEBUT")
     form = UpdateProfilePasswordForm()
 
     if form.validate_on_submit() and current_user.check_password(
         form.current_password.data
     ):
-        print("VALIDATE PASSE")
         if form.future_password.data == form.current_password.data:
-            print("FUTURE != CURRENT")
             return {"success": False}
 
         else:
-            print("GOOD")
             current_user.set_password(form.future_password.data)
 
             db.session.commit()
 
             return {"success": True}
-    print("PAS PASSE")
+
     return {"success": False}
 
 
@@ -162,10 +163,15 @@ def delete_user():
     form = DeleteProfileForm()
 
     if form.validate_on_submit() and current_user.check_password(form.password.data):
+        if "user" in current_user.user_profile_picture:
+            os.remove(
+                os.path.join("static/images/upload/", current_user.user_profile_picture)
+            )
+
         db.session.delete(current_user)
 
         db.session.commit()
 
-        return redirect(url_for("controllers.auth.logout"))
+        return redirect(url_for("controllers.welcome.welcome_page"))
 
     return redirect(url_for("controllers.user.profile_page"))

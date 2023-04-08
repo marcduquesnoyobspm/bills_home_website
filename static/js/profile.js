@@ -7,6 +7,10 @@ function toggleForm(id){
     }
 };
 
+function loadImageInput(){
+    document.getElementById("image").click();
+}
+
 function send_infos_form_data(event){
     event.preventDefault();
     let form = document.getElementById("changeInfosForm");
@@ -41,8 +45,7 @@ function send_image_form_data(event){
         .then((response) => response.json())
         .then((data) => {
         if (data.success) {
-            document.getElementById("profile_pic").src= data.profile_picture;
-            toggleForm("changeImageFormDiv");
+            document.getElementById("profile_pic").src= data.profile_picture + '?' + Date.now();
         }
     });
 }

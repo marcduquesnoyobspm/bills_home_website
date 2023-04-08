@@ -66,19 +66,6 @@
     <a href="{{ url_for('controllers.contract.delete_contract', id=contract_to_show.id) }}">Supprimer le contrat</a>
 </form>
 
-<script>
-    function gazSelected() {
-        "use strict";
-        var category = document.getElementById("category").value;
-        console.log(category);
-        if (category != "Gaz") {
-            document.getElementById("disp").style.display = 'block';
-            document.getElementById("test_label").innerText = "J'ai changé";
-        } else {
-            document.getElementById("disp").style.display = 'none';
-            document.getElementById("test_label").innerText = "Je ne veux pas le voir";
-        }
-    };
-</script>
+
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 {% endblock %}

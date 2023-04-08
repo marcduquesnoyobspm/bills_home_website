@@ -64,31 +64,16 @@
     <a href="{{ url_for('controllers.contract.update_contract', id=contract_to_show.id) }}">Modifier le contrat</a>
 </form>
 
-<!-- <script>
-        function gazSelected(){
-            "use strict";
-            var category = document.getElementById("category").value;
-            console.log(category);
-            if( category != "Gaz"){
-                    document.getElementById("disp").style.display = 'block';
-                    document.getElementById("test_label").innerText = "J'ai changé";
-            }else{
-                document.getElementById("disp").style.display = 'none';
-                document.getElementById("test_label").innerText = "Je ne veux pas le voir";
-            }
-        };
-    </script> -->
-
 <script type="text/javascript">
     var value = document.getElementById("mens").value;
     window.onload = displayTwoDigits();
+
     function displayTwoDigits() {
         var second_numbers_regex = /^\d+[\.\,]+\d{2}$/;
 
         if (!second_numbers_regex.test(value)) {
             document.getElementById("mens").value = parseFloat(value).toFixed(2);
         }
-
     }
 </script>
 {% endblock %}

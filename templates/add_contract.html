@@ -24,7 +24,7 @@
     </div>
     <div id="second-form" style="display:none">
         <p>
-            {{ form.entreprise.label }}<br>
+            {{ form.entreprise.label(id="entreprises-label") }}<br>
             {{ form.entreprise }}<br>
             {% for error in form.entreprise.errors %}
             <span style="color: red;">[{{ error }}]</span>

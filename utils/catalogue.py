@@ -51,7 +51,7 @@ entreprises = {
         "Sosh": "https://www.sosh.fr/",
         "Nordnet": "https://www.nordnet.com/",
     },
-    "Assurance animal": {
+    "Assurance Animaux": {
         "Selfassurance": "https://www.selfassurance.fr/",
         "Kozoo": "https://www.kozoo.eu/",
         "Dalma": "https://www.dalma.co/",

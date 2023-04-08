@@ -16,6 +16,7 @@ services:
       - "5000:5000"
     volumes:
       - ./static/images/:/bills_home_website/static/images/
+      - ./migrations/:/bills_home_website/migrations/
 
   db:
     image: mysql:latest

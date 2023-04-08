@@ -1,8 +1,8 @@
-"""cascade delete
+"""empty message
 
-Revision ID: c21835987b98
-Revises: 79214ac6e915
-Create Date: 2023-03-25 22:00:56.964627
+Revision ID: 4933b76324c9
+Revises: 5f3154136284
+Create Date: 2023-04-08 14:08:04.364105
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = 'c21835987b98'
-down_revision = '79214ac6e915'
+revision = '4933b76324c9'
+down_revision = '5f3154136284'
 branch_labels = None
 depends_on = None
 
